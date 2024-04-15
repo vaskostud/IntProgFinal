@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ seller.username }}'s Listings{% endblock title %}
+
+{% block content %}
+<div class="container my-4">
+    <h3>{{ seller.username }}'s Listings</h3>
+    <div class="row">
+        {% for car in seller_cars %}
+            <!-- Begin anchor tag here to make the entire card clickable -->
+            <div class="col-md-4 mb-3">
+                <a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
+                    <div class="card h-100"> <!-- Add the h-100 class here -->
+                        <!-- Card image -->
+                        {% with car.images.first as car_image %}
+                        <img src="{% if car_image %}{{ car_image.image.url }}{% else %}{% static 'images/default_car.jpeg' %}{% endif %}" class="card-img-top" alt="{{ car_image.alt_text|default:car.make.name }}">
+                        {% endwith %}
+
+                        <!-- Card body -->
+                        <div class="card-body d-flex flex-column"> <!-- Add flex classes to manage space -->
+                            <h5 class="card-title">{{ car.year }} {{ car.make.name }} {{ car.model.name }}</h5>
+                            <p class="card-text">{{ car.description|truncatewords:20 }}</p>
+                            <div class="mt-auto"> <!-- Pushes content to the bottom -->
+                                <span class="price">{{ car.price|floatformat:2 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- End anchor tag here -->
+        {% empty %}
+            <p>No listings available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

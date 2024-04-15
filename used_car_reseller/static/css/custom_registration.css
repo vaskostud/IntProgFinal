@@ -1,0 +1,32 @@
+/* custom_registration.css */
+
+.registration-form-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.needs-validation .form-control:invalid {
+    border-color: #dc3545;
+}
+
+.needs-validation .form-control:valid {
+    border-color: #28a745;
+}
+
+/* Add any additional styling or responsive tweaks here */

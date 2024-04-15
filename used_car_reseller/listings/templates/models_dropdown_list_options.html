@@ -1,0 +1,5 @@
+<!-- models_dropdown_list_options.html -->
+
+{% for model in models %}
+<option value="{{ model.pk }}">{{ model.name }}</option>
+{% endfor %}

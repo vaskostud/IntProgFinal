@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Manage Images for {{ car.make }} {{ car.model }}</h2>
+    <div class="row">
+        {% for image in current_images %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.alt_text }}" style="height: 200px;">
+                <div class="card-body">
+                    <p class="card-text">{{ image.alt_text }}</p>
+                    <form method="post" action="{% url 'manage_car_images' car.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="image_id" value="{{ image.id }}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No images to display.</p>
+        {% endfor %}
+    </div>
+    <a href="{% url 'add_car_image' car.id %}" class="btn btn-primary">Add New Image</a>
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Bid Confirmation</h2>
+    <p>Your bid of ${{ bid.amount }} on the car "{{ bid.car }}" has been submitted successfully!</p>
+    <a href="{% url 'car_detail' bid.car.id %}" class="btn btn-primary">Back to Car</a>
+</div>
+{% endblock %}

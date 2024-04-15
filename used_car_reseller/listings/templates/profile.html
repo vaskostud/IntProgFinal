@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="mt-5">
+                <h2 class="text-center mb-4">Your Profile</h2>
+                <div class="list-group">
+                    <p class="list-group-item"><strong>Username:</strong> {{ user.username }}</p>
+                    <p class="list-group-item"><strong>Email:</strong> {{ user.email }}</p>
+                    <p class="list-group-item"><strong>Phone Number:</strong> {{ user.userprofile.phone_number }}</p>
+                    <p class="list-group-item"><strong>Address:</strong> {{ user.userprofile.address }}</p>
+                    <p class="list-group-item"><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
+                </div>
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                    <!-- Change Password Button -->
+                    <a href="{% url 'password_change' %}" class="btn btn-secondary">Change Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

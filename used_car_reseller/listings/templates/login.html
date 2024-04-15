@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/custom_login.css' %}">
+{% endblock extra_head %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="login-form-wrapper mt-5">
+                <h2 class="text-center mb-4">Login</h2>
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-warning" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="id_username" name="username" placeholder="Your username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="id_password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="#">Forgot your password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

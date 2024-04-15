@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-9 mb-4">
+            <!-- Carousel with shadow and improved aesthetics -->
+            <div id="latestListingsCarousel" class="carousel slide shadow-lg" data-bs-ride="carousel" style="border-radius: 8px; overflow: hidden;">
+                <div class="carousel-inner">
+                    {% for car in latest_cars %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ car.images.first.image.url }}') center center / cover no-repeat;">
+                        <a href="{% url 'car_detail' car_id=car.id %}" class="text-decoration-none" style="display: flex; align-items: center; justify-content: center; height: 500px;">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5 class="text-white bg-dark bg-opacity-50 p-2 rounded">{{ car.year }} {{ car.make.name }} {{ car.model.name }}</h5>
+                                <p class="d-none d-lg-block bg-opacity-50 bg-dark p-1 rounded">{{ car.description|truncatewords:20 }}</p>
+                            </div>
+                        </a>
+                    </div>
+                    {% empty %}
+                    <div class="carousel-item active" style="background: url('{% static 'images/default_car.jpeg' %}') center center / cover no-repeat; height: 500px;">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>No cars available</h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#latestListingsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#latestListingsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <h4 class="mb-3">Top Sellers</h4>
+            <ul class="list-group">
+                {% for seller in top_sellers %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'user_listings' user_id=seller.user.id %}" class="text-decoration-none">{{ seller.user.username }}</a>
+                </li>
+                {% empty %}
+                <li class="list-group-item">No top sellers yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

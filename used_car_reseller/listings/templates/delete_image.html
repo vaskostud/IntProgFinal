@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4 text-center">Manage Car Images</h2>
+
+            <!-- Loop through each image and display it along with a delete button -->
+            {% for image in car.images.all %}
+                <div class="card mb-4">
+                    <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.alt_text }}" style="width: 100%; max-height: 300px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <p class="card-text">{{ image.alt_text }}</p>
+
+                        <!-- Delete button form for each image -->
+                        <form action="{% url 'delete_image' image.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <!-- Link back to edit listing or another appropriate page -->
+            <div class="mt-3 text-center">
+                <a href="{% url 'edit_listing' car.id %}" class="btn btn-outline-secondary">Back to Edit Listing</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

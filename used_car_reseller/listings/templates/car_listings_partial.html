@@ -1,0 +1,36 @@
+{% load static %}
+{% for car in cars %}
+<!-- Wrap the whole card with an anchor tag linking to the car detail page -->
+<a href="{% url 'car_detail' car.id %}" class="text-decoration-none text-dark">
+    <div class="col-md-12 mb-4">
+        <div class="card h-100">
+            <div class="row">
+                <!-- Car image column -->
+                <div class="car-image col-md-4" style="height: 200px; overflow: hidden;">
+                    {% if car.images.first %}
+                    <img src="{{ car.images.first.image.url }}" alt="{{ car.images.first.alt_text }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <img src="{% static 'images/default_car.jpeg' %}" alt="Default Car Image" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                </div>
+
+                <!-- Card body column -->
+                <div class="card-body col-md-8">
+                    <h5 class="card-title">{{ car.year }} {{ car.make.name }} {{ car.model.name }}</h5>
+                    <p class="card-text">{{ car.description|truncatewords:20 }}</p>
+                    <ul class="list-unstyled">
+                        <li>Mileage: {{ car.mileage }} km</li>
+                        <li>Horsepower: {{ car.horsepower }} hp</li>
+                        <li>Price: {{ car.price }} currency</li>
+                        <!-- Add more details as needed -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>
+{% empty %}
+<div class="col">
+    <p>No cars found.</p>
+</div>
+{% endfor %}

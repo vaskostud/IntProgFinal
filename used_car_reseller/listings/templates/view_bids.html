@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>View Bids for My Car</h2>
+    {% for bid in bids %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <p>Bidder: {{ bid.bidder.username }}</p>
+            <p>Amount: ${{ bid.amount }}</p>
+            <p>Message: {{ bid.message }}</p>
+
+            <!-- Display bid status -->
+            {% if bid.is_accepted %}
+                <p class="text-success">Accepted</p>
+            {% elif bid.is_rejected %}
+                <p class="text-danger">Rejected</p>
+            {% elif bid.car.status == 'RV' %}
+                <p class="text-danger">Reserved</p>
+                <a href="{% url 'accept_bid' bid_id=bid.id %}" class="btn btn-success">Accept</a>
+                <a href="{% url 'reject_bid' bid_id=bid.id %}" class="btn btn-danger">Reject</a>
+            {% else %}
+                <p class="text-warning">Pending</p>
+                <!-- Action buttons will only be shown if the bid is still pending -->
+                <a href="{% url 'accept_bid' bid_id=bid.id %}" class="btn btn-success">Accept</a>
+                <a href="{% url 'reject_bid' bid_id=bid.id %}" class="btn btn-danger">Reject</a>
+                <a href="{% url 'reserve_car' bid_id=bid.id %}" class="btn btn-warning">Reserve Car</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p>No bids placed yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

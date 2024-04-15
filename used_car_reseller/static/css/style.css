@@ -1,0 +1,7 @@
+body, html {
+    height: 100%;  /* Ensure the full height is covered */
+}
+
+main {
+    padding-bottom: 100px;  /* Adjust this value based on your footer's height */
+}

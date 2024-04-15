@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>Add New Image for {{ car.make }} {{ car.model }}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ new_image_form.as_p }}
+    <button type="submit" class="btn btn-success">Upload Image</button>
+  </form>
+</div>
+{% endblock %}

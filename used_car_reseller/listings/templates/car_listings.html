@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<!-- Optional: Include jQuery if you plan to use it for AJAX calls -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-3">
+        <div class="col">
+            <!-- Search bar -->
+            <form method="get" class="search-form" id="filter-form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="search" value="{{ request.GET.search }}">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Listings -->
+    <div class="container">
+        <div class="row">
+            <div class="car-listings">
+                <!-- Display each car. Adjust according to your template. -->
+                {% include 'car_listings_partial.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

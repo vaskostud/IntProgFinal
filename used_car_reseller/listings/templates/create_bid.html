@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Place a Bid on {{ car.make.name }} {{ car.model.name }}</h2>
+  <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Submit Bid</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

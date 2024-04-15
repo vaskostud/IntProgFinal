@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5 car-detail-page">
+    <!-- Car Images Carousel -->
+<!-- Car Images Carousel -->
+<div id="carImagesCarousel" class="carousel slide mb-4" data-bs-ride="carousel" style="height: 300px; overflow: hidden;">
+    <div class="carousel-inner">
+        {% for image in car.images.all %}
+        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+            <!-- Trigger the modal with a button or link -->
+            <a href="#imageModal" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image-url="{{ image.image.url }}">
+                <img src="{{ image.image.url }}" class="d-block w-100 carousel-image" style="height: 300px; object-fit: cover;" alt="Click to view larger">
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if car.images.all.count > 1 %}
+        <button class="carousel-control-prev" type="button" data-bs-target="#carImagesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carImagesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    {% endif %}
+</div>
+
+<!-- Modal for viewing images -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image View</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" class="w-100" alt="Car Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Car Details -->
+    <div class="row">
+        <div class="col-lg-8">
+            <h1>{{ car.make.name }} {{ car.model.name }} {{ car.year }}</h1>
+            <p>{{ car.description }}</p>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-dark mb-3">
+                <div class="card-header bg-dark text-white">Details</div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ car.body_type }} - {{ car.color }}</h4>
+                    <p class="card-text">
+                        <b>Price:</b> ${{ car.price }}<br>
+                        <b>Mileage:</b> {{ car.mileage }} km<br>
+                        <b>Horsepower:</b> {{ car.horsepower }} bhp<br>
+                        <b>Torque:</b> {{ car.torque }} Nm<br>
+                        <b>Fuel Type:</b> {{ car.fuel_type }}<br>
+                        <b>VIN:</b> {{ car.vin }}
+                    </p>
+
+                    <span class="badge bg-success">{{car.status}}</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Owner Information and Contact -->
+    <div class="row mb-4">
+        <div class="col">
+            <h3 class="mb-3">Seller Information</h3>
+            <p><b>Name:</b> {{ car.owner.username }}</p>
+            <p><b>Contact:</b> <a href="mailto:{{ car.owner.email }}">{{ car.owner.email }}</a></p>
+            <p><b>Phone Number:</b>{{ car.owner.userprofile.phone_number }}</p>
+            <p>
+                {% if user.is_authenticated and car.owner != user and car.status == 'AV' %}
+                    <div class="text-center mt-3">
+                        <a href="{% url 'create_bid' car.id %}" class="btn btn-success">Place a Bid</a>
+                    </div>
+                {% endif %}
+            </p>
+            <p>
+                {% if user.is_authenticated and car.owner == user %}
+                    <div class="text-center mt-3">
+                        <a href="{% url 'view_bids' car.id %}" class="btn btn-success">View Bids</a>
+                    </div>
+                {% endif %}
+
+            </p>
+            <!-- Additional contact information or a contact form could go here -->
+        </div>
+    </div>
+    <div class="reviews">
+        <h3>Reviews</h3>
+        {% for review in car.reviews.all %}
+        <div class="review">
+            <strong>{{ review.reviewer.username }}</strong> ({{ review.rating }} stars)
+            <p>{{ review.comment }}</p>
+        </div>
+        {% empty %}
+        <p>No reviews yet.</p>
+        {% endfor %}
+        {% if user.is_authenticated %}
+        {% if has_purchased %}
+             <a href="{% url 'add_review' car_id=car.id %}">Leave a Review</a>
+        {% endif %}
+        {% endif %}
+    </div>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    $('#imageModal').on('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var imageUrl = button.getAttribute('data-bs-image-url'); // Extract info from data-* attributes
+        var modalImage = document.getElementById('modalImage');
+        modalImage.src = imageUrl;
+    });
+});
+</script>
+
+{% endblock %}
