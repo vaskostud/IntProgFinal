@@ -38,18 +38,31 @@
                 </button>
             </div>
         </div>
-        <div class="col-md-3 mb-4">
+         <div class="col-md-3 mb-4">
             <h4 class="mb-3">Top Sellers</h4>
             <ul class="list-group">
                 {% for seller in top_sellers %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{% url 'user_listings' user_id=seller.user.id %}" class="text-decoration-none">{{ seller.user.username }}</a>
+                <li class="list-group-item">
+                    <a href="{% url 'user_listings' user_id=seller.user.id %}" class="text-decoration-none">
+                        {{ seller.user.username }}
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-2">
+                            <small class="text-muted">Rating:</small>
+                            <span class="badge bg-primary">{{ seller.avg_rating|default:"No Rating" }}</span>
+                        </div>
+                        <div>
+                            <small class="text-muted">Cars Sold:</small>
+                            <span class="badge bg-success">{{ seller.sold_cars_count }}</span>
+                        </div>
+                    </div>
                 </li>
                 {% empty %}
                 <li class="list-group-item">No top sellers yet.</li>
                 {% endfor %}
             </ul>
         </div>
+
     </div>
 </div>
 
