@@ -7,14 +7,22 @@ from django.db.models import Q, Avg
 # Index view
 def index(request):
     latest_cars = Car.objects.filter(status='AV').order_by('-created_at')[:5]
+
+    # Assuming 'user__car__is_sold=True' means that we're looking for cars that have been sold by the user
+    # and 'user__review__rating' is the field path to get to the rating of reviews made to cars sold by the user.
+    # If 'rating' is a field directly on the UserProfile, then you can order by it directly using the F expression.
     top_sellers = UserProfile.objects.filter(user__car__is_sold=True) \
-                      .annotate(avg_rating=Avg('user__review__rating')) \
-                      .order_by('-avg_rating')[:5]
+                      .annotate(avg_rating=Avg('user__car__reviews__rating'),
+                                sold_cars_count=Count('user__car', filter=Q(user__car__is_sold=True))
+                                ) \
+                      .order_by(F('avg_rating').desc(nulls_last=True))[:5]
+
     context = {
         'latest_cars': latest_cars,
         'top_sellers': top_sellers,
     }
     return render(request, 'index.html', context)
+
 
 
 # User listings view
